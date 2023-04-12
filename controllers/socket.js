@@ -1,26 +1,54 @@
-const Usuario = require("../models/usuario");
+const Register = require("../models/register");
+const Reservation = require("../models/reservation");
 
-const userConnect = async (uid) => {
-  const usuario = await Usuario.findById(uid);
-  usuario.online = true;
-  await usuario.save();
-  return usuario;
+const getCash = async () => {
+  const register = await Register.find().sort({ createdAt: -1 });
+  return register;
 };
 
-const userDisconnect = async (uid) => {
-  const usuario = await Usuario.findById(uid);
-  usuario.online = false;
-  await usuario.save();
-  return usuario;
+const sendCashRegister = async (payload) => {
+  try {
+    const register = new Register(payload);
+    await register.save();
+    return register;
+  } catch (error) {
+    return false;
+  }
 };
 
-const getUsers = async () => {
-  const users = await Usuario.find().sort("-online");
-  return users;
+const getReservations = async () => {
+  try {
+    const reservation = await Reservation.find().sort({ createdAt: -1 });
+    return reservation;
+  } catch (error) {
+    return false;
+  }
+};
+
+const sendReservation = async (payload) => {
+  try {
+    const reservation = new Reservation(payload);
+    await reservation.save();
+    return reservation;
+  } catch (error) {
+    return false;
+  }
+};
+
+const sendReservationByID = async ({ id, date }) => {
+  try {
+    const reservation = await Reservation.findByIdAndUpdate(id, { status: date });
+    await reservation.save();
+    return reservation;
+  } catch (error) {
+    return false;
+  }
 };
 
 module.exports = {
-  userConnect,
-  userDisconnect,
-  getUsers,
+  getCash,
+  sendCashRegister,
+  getReservations,
+  sendReservation,
+  sendReservationByID,
 };

@@ -1,21 +1,5 @@
 const Register = require("../models/register");
 
-const newRegister = async (req, res) => {
-  try {
-    const register = new Register(req.body);
-    await register.save();
-    res.json({
-      ok: true,
-      register,
-    });
-  } catch (error) {
-    res.status(500).json({
-      ok: false,
-      msg: "Talk with admin",
-    });
-  }
-};
-
 const getAllRegister = async (req, res) => {
   try {
     const register = await Register.find().sort({ createdAt: -1 });
@@ -32,6 +16,5 @@ const getAllRegister = async (req, res) => {
 };
 
 module.exports = {
-  newRegister,
   getAllRegister,
 };
