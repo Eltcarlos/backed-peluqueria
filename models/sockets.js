@@ -1,10 +1,3 @@
-const {
-  getCash,
-  sendCashRegister,
-  getReservations,
-  sendReservation,
-  sendReservationByID,
-} = require("../controllers/socket");
 const { validateJWT } = require("../helpers/jwt");
 
 class Sockets {
@@ -26,25 +19,6 @@ class Sockets {
 
       // Connect to user at room // this.io.to('sala-gamer').emit
       socket.join("admin");
-
-      socket.on("list-cash", async (payload) => {
-        await sendCashRegister(payload);
-        this.io.to("admin").emit("list-cash", await getCash());
-      });
-
-      socket.on("list-reservation", async (payload) => {
-        await sendReservation(payload);
-        this.io.to("admin").emit("list-reservation", await getReservations());
-      });
-
-      socket.on("list-reservationByID", async (payload) => {
-        await sendReservationByID(payload);
-        this.io.to("admin").emit("list-reservationByID", await getReservations());
-      });
-
-      socket.on("disconnect", async () => {
-        this.io.to("admin").emit("list-cash", await getCash());
-      });
     });
   }
 }

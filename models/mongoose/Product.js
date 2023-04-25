@@ -1,26 +1,31 @@
 const { Schema, model } = require("mongoose");
 
-const RegisterSchema = Schema(
+const ProductSchema = Schema(
   {
     name: {
       type: String,
       required: true,
     },
-    method: {
+    price: {
       type: Number,
       required: true,
     },
-    worker: {
+    oldPrice: {
       type: Number,
       required: true,
     },
-    amount: {
-      type: Number,
-      required: true,
-    },
-    coin: {
+    description: {
       type: String,
-      default: "EUR",
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    rating: Number,
+    supply: {
+      type: Number,
+      required: true,
     },
   },
   {
@@ -28,4 +33,4 @@ const RegisterSchema = Schema(
   }
 );
 
-module.exports = model("cash", RegisterSchema);
+module.exports = model("Product", ProductSchema);

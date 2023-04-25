@@ -1,7 +1,3 @@
-/*
-   path:
-*/
-
 const auth = require("../controllers/auth");
 const { Router } = require("express");
 const { check } = require("express-validator");
@@ -10,9 +6,9 @@ const { validarJWT } = require("../middlewares/validate-jwt");
 
 const router = Router();
 router.post(
-  "/new",
+  "/register",
   [
-    check("nombre", "The email is required").not().isEmpty(),
+    check("name", "The name is required").not().isEmpty(),
     check("email", "The email is required").isEmail(),
     check("password", "The password is required").not().isEmpty(),
     Validator,
@@ -20,7 +16,7 @@ router.post(
   auth.register
 );
 router.post(
-  "/",
+  "/login",
   [
     check("email", "The email is required").isEmail(),
     check("password", "The password is required").not().isEmpty(),

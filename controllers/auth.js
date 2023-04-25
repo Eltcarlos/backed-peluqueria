@@ -1,32 +1,36 @@
-const Usuario = require("../models/usuario");
+const User = require("../models/mongoose/user");
 const bcrypt = require("bcryptjs");
 const { generateJWT } = require("../helpers/jwt");
 
 const register = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const validationEmail = await Usuario.findOne({ email });
+    const validationEmail = await User.findOne({ email });
     if (validationEmail) {
       return res.status(400).json({
         ok: false,
+        user: {},
         msg: "the email is already exists",
+        Token: "",
       });
     }
-
-    const usuario = new Usuario(req.body);
+    const user = new User(req.body);
     const salt = bcrypt.genSaltSync();
-    usuario.password = bcrypt.hashSync(password, salt);
-    await usuario.save();
-    const token = await generateJWT(usuario.id);
+    user.password = bcrypt.hashSync(password, salt);
+    await user.save();
+    const token = await generateJWT(user.id);
     res.json({
       ok: true,
-      usuario,
+      msg: "complete",
+      user,
       token,
     });
   } catch (error) {
     res.status(500).json({
       ok: false,
       msg: "Talk with admin",
+      user: {},
+      token: "",
     });
   }
 };
@@ -34,30 +38,37 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const usuarioDB = await Usuario.findOne({ email });
-    if (!usuarioDB) {
-      return res.status(404).json({
+    const UserDB = await User.findOne({ email });
+    if (!UserDB) {
+      return res.json({
         ok: false,
-        msg: "email not found",
+        user: {},
+        msg: "Error",
+        token: "",
       });
     }
-    const validPassword = bcrypt.compareSync(password, usuarioDB.password);
+    const validPassword = bcrypt.compareSync(password, UserDB.password);
     if (!validPassword) {
-      return res.status(404).json({
+      return res.json({
         ok: false,
-        msg: "Password incorrect",
+        user: {},
+        msg: "Error",
+        token: "",
       });
     }
-    const token = await generateJWT(usuarioDB.id);
+    const token = await generateJWT(UserDB.id);
     res.json({
       ok: true,
-      usuario: usuarioDB,
+      user: UserDB,
+      msg: "complete",
       token,
     });
   } catch (error) {
-    res.status(500).json({
+    res.json({
       ok: false,
+      user: {},
       msg: "Talk with admin",
+      token: "",
     });
   }
 };
@@ -66,11 +77,11 @@ const revalidateToken = async (req, res) => {
   const uid = req.uid;
 
   const token = await generateJWT(uid);
-  const usuario = await Usuario.findById(uid);
+  const User = await User.findById(uid);
 
   res.json({
     ok: true,
-    usuario,
+    User,
     token,
   });
 };

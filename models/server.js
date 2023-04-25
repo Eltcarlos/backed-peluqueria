@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const Sockets = require("./sockets");
 const { dbConnection } = require("../database/config");
+const RouterMain = require("../router");
 
 class Server {
   constructor() {
@@ -37,9 +38,7 @@ class Server {
     this.app.use(express.json());
 
     //routes
-    this.app.use("/api/login", require("../router/auth"));
-    this.app.use("/api/cash", require("../router/cashRegister"));
-    this.app.use("/api/reservation", require("../router/reservation"));
+    this.app.use("/", RouterMain);
   }
 
   // Esta configuración se puede tener aquí o como propieda de clase
