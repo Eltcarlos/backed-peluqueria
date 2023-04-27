@@ -12,6 +12,15 @@ const getUser = async (req, res) => {
   }
 };
 
+const getClients = asyncHandler(async (req, res) => {
+  try {
+    const clients = await User.find({ role: "user" }).select("-password");
+    res.status(200).json(clients);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 const changeUserPassword = asyncHandler(async (req, res) => {
   const { oldPassword, confirmPassword } = req.body;
   try {
@@ -50,4 +59,4 @@ const changePersonalDetails = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getUser, changeUserPassword, changePersonalDetails };
+module.exports = { getUser, changeUserPassword, changePersonalDetails, getClients };

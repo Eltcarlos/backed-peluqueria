@@ -4,6 +4,6 @@ const { validarJWT, admin } = require("../middlewares/validate-jwt");
 
 const router = Router();
 
-router.get("/admins", validarJWT, admin, management.getAdmins);
+router.get("/admins", management.getAdmins);
 
 module.exports = router;
