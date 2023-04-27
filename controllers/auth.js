@@ -39,6 +39,7 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const UserDB = await User.findOne({ email });
+    console.log(UserDB);
     if (!UserDB) {
       return res.json({
         ok: false,

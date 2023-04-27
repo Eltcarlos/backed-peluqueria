@@ -15,6 +15,10 @@ const UserSchema = Schema(
       type: String,
       required: true,
     },
+    image: {
+      type: String,
+      default: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+    },
     city: String,
     state: String,
     country: String,

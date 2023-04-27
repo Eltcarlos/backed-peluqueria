@@ -8,6 +8,8 @@ const cors = require("cors");
 const Sockets = require("./sockets");
 const { dbConnection } = require("../database/config");
 const RouterMain = require("../router");
+const Product = require("./mongoose/Product");
+const { listProduct } = require("../data/product");
 
 class Server {
   constructor() {
@@ -56,6 +58,7 @@ class Server {
 
     // Inicializar Server
     this.server.listen(this.port, () => {
+      // Product.insertMany(listProduct);
       console.log("Server corriendo en puerto:", this.port);
     });
   }

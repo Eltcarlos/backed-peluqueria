@@ -6,13 +6,15 @@ const ProductSchema = Schema(
       type: String,
       required: true,
     },
+    img: {
+      type: String,
+    },
     price: {
       type: Number,
       required: true,
     },
     oldPrice: {
       type: Number,
-      required: true,
     },
     description: {
       type: String,
@@ -23,7 +25,7 @@ const ProductSchema = Schema(
       required: true,
     },
     rating: Number,
-    supply: {
+    amount: {
       type: Number,
       required: true,
     },
