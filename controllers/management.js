@@ -1,4 +1,4 @@
-const User = require("../models/User.js");
+const User = require("../models/mongoose/user");
 
 const getAdmins = async (req, res) => {
   try {
