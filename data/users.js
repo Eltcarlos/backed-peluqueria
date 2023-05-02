@@ -1,0 +1,53 @@
+const listUser = [
+  {
+    name: "John Doe",
+    email: "johndoe@example.com",
+    password: "password123",
+    city: "New York",
+    state: "New York",
+    country: "USA",
+    occupation: "Software Engineer",
+    phoneNumber: "555-555-5555",
+    transactions: [],
+    role: "admin",
+  },
+  {
+    name: "Jane Smith",
+    email: "janesmith@example.com",
+    password: "password456",
+    city: "Los Angeles",
+    state: "California",
+    country: "USA",
+    occupation: "Graphic Designer",
+    phoneNumber: "555-555-5555",
+    transactions: [],
+    role: "user",
+  },
+  {
+    name: "Bob Johnson",
+    email: "bjohnson@example.com",
+    password: "password789",
+    city: "Chicago",
+    state: "Illinois",
+    country: "USA",
+    occupation: "Accountant",
+    phoneNumber: "555-555-5555",
+    transactions: [],
+    role: "user",
+  },
+  // ... add more users here
+  {
+    name: "Alice Green",
+    email: "alicegreen@example.com",
+    password: "password321",
+    city: "London",
+    state: "",
+    country: "UK",
+    occupation: "Marketing Manager",
+    phoneNumber: "555-555-5555",
+    transactions: [],
+    role: "user",
+  },
+];
+
+module.exports = listUser;

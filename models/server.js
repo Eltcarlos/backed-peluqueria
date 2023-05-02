@@ -10,6 +10,8 @@ const { dbConnection } = require("../database/config");
 const RouterMain = require("../router");
 const Product = require("./mongoose/Product");
 const { listProduct } = require("../data/product");
+const listUser = require("../data/users");
+const User = require("../models/mongoose/user");
 
 class Server {
   constructor() {
@@ -58,7 +60,6 @@ class Server {
 
     // Inicializar Server
     this.server.listen(this.port, () => {
-      // Product.insertMany(listProduct);
       console.log("Server corriendo en puerto:", this.port);
     });
   }

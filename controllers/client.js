@@ -59,4 +59,61 @@ const changePersonalDetails = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getUser, changeUserPassword, changePersonalDetails, getClients };
+const createDirection = asyncHandler(async (req, res) => {
+  const address = req.body;
+  try {
+    const { addresses } = await User.findById(req.user._id);
+    const newDirections = [...addresses, address];
+    console.log(newDirections);
+    const user = await User.findByIdAndUpdate(req.user._id, {
+      addresses: newDirections,
+    });
+    console.log(user);
+    await user.save();
+    res.json({
+      ok: true,
+      msg: "Direccion agregada",
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
+const getDirections = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const user = await User.findById(id);
+    res.status(200).json(user.addresses);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
+const removeDirections = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.body;
+    const { addresses } = await User.findById(req.user._id);
+    const newDirections = addresses.filter((index) => index.id !== id);
+    const user = await User.findByIdAndUpdate(req.user._id, {
+      addresses: newDirections,
+    });
+    await user.save();
+    res.json({
+      ok: true,
+      msg: "Direccion removida",
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
+module.exports = {
+  getUser,
+  changeUserPassword,
+  changePersonalDetails,
+  getClients,
+  createDirection,
+  getDirections,
+  removeDirections,
+};

@@ -5,7 +5,6 @@ const asyncHandler = require("express-async-handler");
 const validarJWT = asyncHandler(async (req, res, next) => {
   let token;
   // check if token exists in headers
-  console.log(req.headers);
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     // set token from Bearer token in header
     try {

@@ -25,6 +25,7 @@ const UserSchema = Schema(
     occupation: String,
     phoneNumber: String,
     transactions: Array,
+    addresses: Array,
     role: {
       type: String,
       enum: ["user", "admin", "superAdmin"],
