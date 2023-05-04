@@ -1,6 +1,8 @@
 const User = require("../models/mongoose/user");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
+const { sendTransaction, generateToken } = require("../utils/epayco");
+const Transaction = require("../models/mongoose/Transaction");
 
 const getUser = async (req, res) => {
   try {
@@ -108,6 +110,57 @@ const removeDirections = asyncHandler(async (req, res) => {
   }
 });
 
+const createTransaction = asyncHandler(async (req, res) => {
+  try {
+    const { productsCart, ...rest } = req.body;
+    await generateToken();
+    const resp = await sendTransaction(rest);
+    if (!resp) {
+      return res.status(400).json({
+        ok: false,
+        data: resp.data,
+      });
+    }
+
+    console.log(resp);
+    const { data } = resp;
+
+    const dataTransaction = {
+      userId: req.user._id,
+      status: data.transaction.status,
+      ref_payco: data.transaction.data.ref_payco,
+      invoice: data.transaction.data.factura,
+      price: data.transaction.data.valor,
+      iva: data.transaction.data.iva,
+      ico: data.transaction.data.ico,
+      paymentReceipt: data.transaction.data.recibo,
+      dateTransaction: data.transaction.data.fecha,
+      typeCard: data.transaction.data.franquicia,
+      typeDoc: data.transaction.data.tipo_doc,
+      document: data.transaction.data.documento,
+      products: productsCart,
+      address: {
+        country: rest.country,
+        city: rest.city,
+        location: rest.location,
+        address: rest.address,
+        phoneNumber: rest.phoneNumber,
+      },
+    };
+    console.log("test2");
+
+    const transaction = new Transaction(dataTransaction);
+    await transaction.save();
+    console.log("test3");
+    res.json({
+      ok: true,
+      data: resp,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 module.exports = {
   getUser,
   changeUserPassword,
@@ -116,4 +169,5 @@ module.exports = {
   createDirection,
   getDirections,
   removeDirections,
+  createTransaction,
 };
